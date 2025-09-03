@@ -1,5 +1,580 @@
 {
-  "api_key": "your_api_key_here",
-  "secret_key": "your_secret_key_here"
-}
-
+  "bot_overview": {
+    "name": "ContentGenBot",
+    "description": "بوت ذكي للنشر التلقائي باستخدام ذكاء جوجل الاصطناعي.",
+    "purpose": "إنشاء وجدولة المحتوى للقنوات على تيليجرام.",
+    "language": "Python",
+    "framework": "python-telegram-bot"
+  },
+  "configuration": {
+    "bot_token": "7153415266:AAEuj_36SOSRkBJm_wlujTX-c0jT7x4bsys",
+    "bot_username": "CoontentGenBot",
+    "bot_name": "CoontentGenBot",
+    "official_channel": "https://t.me/CoontentGenBot",
+    "admin_id": 5252815668,
+    "admin_username": "@loau_mzo",
+    "language": "arabic",
+    "timezone": "Asia/Damascus",
+    "approval_required": true,
+    "max_channels_per_user": 3,
+    "approval_max_wait_time_hours": 6,
+    "default_post_signature": "📧 تم إنشاء هذا المحتوى تلقائياً بواسطة ذكاء جوجل الاصطناعي",
+    "welcome_message": "🤖 مرحباً بك في بوت ContentGen البوت الذكي للنشر التلقائي!\n\n⏰ يعمل البوت بتوقيت دمشق\n📊 يمكنك إضافة حتى 3 قنوات مختلفة\n🔒 يجب طلب الموافقة من الأدمن لاستخدام البوت\n⏳ سيتم الرد على طلبك خلال 6 ساعات كحد أقصى\n\n🚀 يعمل البوت بتقنية ذكاء جوجل الاصطناعي\n📢 قناتنا الرسمية: @CoontentGenBot"
+  },
+  "ai_settings": {
+    "provider": "Google Gemini",
+    "api_key": "AIzaSyD26Own6suWgzX9IOYgRoaWq1woV82DhEA",
+    "model_name": "gemini-pro",
+    "text_generation_parameters": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 40,
+      "max_output_tokens": 500
+    },
+    "content_types_and_prompts": {
+      "technology": "اكتب فقرة عربية جذابة عن {topic} بأسلوب تقني عصري مناسب للشباب. (10-15 سطراً)",
+      "news": "اكتب خبراً عربياً مختصراً عن {topic} بأسلوب إخباري محايد. (8-12 سطراً)",
+      "general": "اكتب محتوى عربي عام عن {topic} بأسلوب شيق وسلس. (10-15 سطراً)",
+      "sports": "اكتب تقريراً رياضياً عربياً عن {topic} بأسلوب حماسي. (10-12 سطراً)",
+      "entertainment": "اكتب محتوى ترفيهي عربي عن {topic} بأسلوب ممتع. (8-12 سطراً)"
+    },
+    "image_generation_status": "قيد التطوير (الإصدار 2.0)"
+  },
+  "channel_management": {
+    "features": [
+      "إضافة قنوات جديدة (بحد أقصى 3 قنوات لكل مستخدم)",
+      "عرض القنوات المضافة",
+      "تعديل نوع المحتوى للقناة",
+      "تعديل جدولة النشر للقناة (أيام وأوقات)",
+      "تفعيل/تعطيل القناة"
+    ],
+    "channel_data_structure": {
+      "channel_id": "معرف القناة (سلسلة نصية)",
+      "channel_username": "اسم المستخدم للقناة (سلسلة نصية)",
+      "owner_id": "معرف المستخدم المالك (عدد صحيح)",
+      "content_type": "نوع المحتوى (مثل technology, news, general)",
+      "posting_schedule": "جدولة النشر (كائن JSON يحتوي على أيام وأوقات)",
+      "custom_signature": "توقيع مخصص للمنشورات (سلسلة نصية)",
+      "sources_mention": "الإشارة إلى المصادر (قيمة منطقية)",
+      "active": "حالة القناة (نشطة/غير نشطة - قيمة منطقية)"
+    },
+    "example_channel_configurations": [
+      {
+        "content_type": "technology",
+        "posting_schedule": {
+          "times": [
+            "12:00"
+          ],
+          "days": [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+          ]
+        },
+        "custom_signature": "🔥 شكراً لمتابعتكم قناتنا التقنية",
+        "sources_mention": true,
+        "active": false
+      },
+      {
+        "content_type": "general",
+        "posting_schedule": {
+          "times": [
+            "09:00",
+            "18:00"
+          ],
+          "days": [
+            "Monday",
+            "Wednesday",
+            "Friday"
+          ]
+        },
+        "custom_signature": "🌙 من فريق القناة مع الحب",
+        "sources_mention": true,
+        "active": false
+      },
+      {
+        "content_type": "news",
+        "posting_schedule": {
+          "times": [
+            "08:00",
+            "12:00",
+            "16:00",
+            "20:00"
+          ],
+          "days": [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+          ]
+        },
+        "custom_signature": "📰 تحديثات حصرية على مدار الساعة",
+        "sources_mention": true,
+        "active": false
+      }
+    ]
+  },
+  "user_management_and_approval": {
+    "features": [
+      "تسجيل المستخدمين الجدد تلقائياً",
+      "نظام موافقة الأدمن على المستخدمين الجدد",
+      "إدارة طلبات الموافقة المعلقة",
+      "إحصائيات المستخدمين (إجمالي، نشط، معلق)"
+    ],
+    "user_data_structure": {
+      "user_id": "معرف المستخدم (عدد صحيح)",
+      "username": "اسم المستخدم (سلسلة نصية)",
+      "first_name": "الاسم الأول (سلسلة نصية)",
+      "last_name": "الاسم الأخير (سلسلة نصية)",
+      "is_approved": "حالة الموافقة (قيمة منطقية)",
+      "approval_date": "تاريخ الموافقة (طابع زمني)",
+      "created_date": "تاريخ إنشاء الحساب (طابع زمني)"
+    },
+    "approval_request_structure": {
+      "request_id": "معرف الطلب (عدد صحيح)",
+      "user_id": "معرف المستخدم (عدد صحيح)",
+      "request_date": "تاريخ الطلب (طابع زمني)",
+      "status": "حالة الطلب (pending, approved, rejected)",
+      "response_date": "تاريخ الاستجابة (طابع زمني)"
+    },
+    "ui_messages": {
+      "approval_request_message": "🔒 يبدو أنك غير مصرح لك باستخدام البوت بعد. يجب الحصول على موافقة الأدمن @loau_mzo أولاً. هل تريد طلب الموافقة الآن؟ (سيتم الرد خلال 6 ساعات كحد أقصى)",
+      "approval_sent_message": "✅ تم إرسال طلب الموافقة إلى الأدمن @loau_mzo. سيتم الرد على طلبك خلال 6 ساعات كحد أقصى. سيتم إعلامك فور الموافقة على طلبك.",
+      "admin_notification_message": "👤 مستخدم جديد يطلب صلاحية استخدام البوت:\n\nالمعرف: {user_id}\nالاسم: {user_name}\n\n⏰ يرجى الرد خلال 6 ساعات\nهل توافق على منح الصلاحية؟",
+      "user_approved_message": "🎉 تمت الموافقة على طلبك! يمكنك الآن استخدام البوت والاستفادة من جميع الميزات.",
+      "user_rejected_message": "❌ تم رفض طلبك لاستخدام البوت. يمكنك التواصل مع الأدمن @loau_mzo للمزيد من المعلومات."
+    }
+  },
+  "commands_and_handlers": {
+    "commands": [
+      {
+        "command": "/start",
+        "description": "بدء استخدام البوت، وتسجيل المستخدم، وعرض رسالة الترحيب.",
+        "handler": "start (handlers_commands.py)"
+      },
+      {
+        "command": "/admin",
+        "description": "الوصول إلى لوحة تحكم الأدمن وعرض الإحصائيات وطلبات الموافقة.",
+        "handler": "admin_panel (handlers_commands.py)"
+      },
+      {
+        "command": "/my_channels",
+        "description": "عرض القنوات التي أضافها المستخدم.",
+        "handler": "my_channels (handlers_commands.py)"
+      },
+      {
+        "command": "/add_channel",
+        "description": "بدء عملية إضافة قناة جديدة.",
+        "handler": "add_channel (handlers_commands.py)"
+      },
+      {
+        "command": "/cancel",
+        "description": "إلغاء العملية الحالية (مثل إضافة قناة أو إنشاء منشور).",
+        "handler": "cancel (handlers_commands.py), cancel_operation (handlers_messages.py)"
+      },
+      {
+        "command": "/help",
+        "description": "عرض قائمة الأوامر المتاحة.",
+        "handler": "help_command (handlers_commands.py)"
+      },
+      {
+        "command": "/admin_stats",
+        "description": "عرض إحصائيات سريعة للأدمن (إجمالي المستخدمين، النشطين، المعلقين).",
+        "handler": "admin_stats (handlers_admin.py)"
+      },
+      {
+        "command": "/pending",
+        "description": "عرض طلبات الموافقة المعلقة للأدمن.",
+        "handler": "pending_requests (handlers_admin.py)"
+      }
+    ],
+    "callback_queries": [
+      {
+        "data_prefix": "request_approval",
+        "description": "طلب الموافقة من الأدمن لاستخدام البوت.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "approve_",
+        "description": "موافقة الأدمن على طلب مستخدم.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "reject_",
+        "description": "رفض الأدمن لطلب مستخدم.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "type_",
+        "description": "اختيار نوع المحتوى عند إضافة قناة.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "day_",
+        "description": "اختيار أيام النشر عند جدولة القناة.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "days_done",
+        "description": "الانتهاء من اختيار أيام النشر.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "time_",
+        "description": "اختيار وقت النشر عند جدولة القناة.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "custom_time",
+        "description": "طلب إدخال وقت مخصص للنشر.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "save_channel",
+        "description": "حفظ إعدادات القناة الجديدة في قاعدة البيانات.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "cancel_setup",
+        "description": "إلغاء عملية إعداد القناة.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "create_post_now",
+        "description": "الانتقال لإنشاء منشور بعد حفظ القناة.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "add_another_channel",
+        "description": "بدء عملية إضافة قناة أخرى بعد حفظ القناة.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "view_my_channels",
+        "description": "عرض قنوات المستخدم بعد حفظ القناة.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "edit_",
+        "description": "بدء تعديل قناة محددة.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "edit_type_",
+        "description": "تعديل نوع المحتوى لقناة محددة.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "edit_schedule_",
+        "description": "تعديل جدولة النشر لقناة محددة.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "edit_days_",
+        "description": "تعديل أيام النشر لقناة محددة.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "edit_time_",
+        "description": "تعديل أوقات النشر لقناة محددة.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "toggle_active_",
+        "description": "تفعيل أو تعطيل قناة محددة.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "back_to_channels",
+        "description": "العودة إلى قائمة إدارة القنوات.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      },
+      {
+        "data_prefix": "back_to_main",
+        "description": "العودة إلى القائمة الرئيسية.",
+        "handler": "handle_callbacks (handlers_callbacks.py)"
+      }
+    ],
+    "message_handlers": [
+      {
+        "trigger": "✨ إنشاء منشور",
+        "description": "بدء عملية إنشاء منشور جديد.",
+        "handler": "handle_messages (handlers_messages.py)",
+        "conversation_state": "POST_TOPIC"
+      },
+      {
+        "trigger": "⏰ جدولة منشور",
+        "description": "(قيد التطوير) فتح خيارات جدولة المنشورات.",
+        "handler": "handle_messages (handlers_messages.py)"
+      },
+      {
+        "trigger": "⚙️ إعدادات القنوات",
+        "description": "فتح قائمة إدارة القنوات.",
+        "handler": "handle_messages (handlers_messages.py)"
+      },
+      {
+        "trigger": "✏️ تعديل التوقيع",
+        "description": "(قيد التطوير) بدء عملية تعديل توقيع المنشورات.",
+        "handler": "handle_messages (handlers_messages.py)"
+      },
+      {
+        "trigger": "📢 قناتنا الرسمية",
+        "description": "عرض رابط القناة الرسمية للبوت.",
+        "handler": "handle_messages (handlers_messages.py)"
+      },
+      {
+        "trigger": "🏠 الرئيسية",
+        "description": "العودة إلى القائمة الرئيسية.",
+        "handler": "handle_messages (handlers_messages.py)"
+      },
+      {
+        "trigger": "أي نص (في حالة POST_TOPIC)",
+        "description": "معالجة موضوع المنشور المدخل من قبل المستخدم.",
+        "handler": "handle_post_topic (handlers_messages.py)",
+        "conversation_state": "POST_TOPIC"
+      },
+      {
+        "trigger": "أي نص (في حالة POST_CONFIRM)",
+        "description": "معالجة تأكيد المستخدم لحفظ المنشور.",
+        "handler": "handle_post_confirmation (handlers_messages.py)",
+        "conversation_state": "POST_CONFIRM"
+      },
+      {
+        "trigger": "أوامر الأدمن النصية (مثل 📊 الإحصائيات)",
+        "description": "معالجة الأوامر النصية الخاصة بالأدمن.",
+        "handler": "handle_admin_commands (handlers_messages.py)"
+      }
+    ]
+  },
+  "database_schema": {
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          {
+            "name": "user_id",
+            "type": "INTEGER PRIMARY KEY"
+          },
+          {
+            "name": "username",
+            "type": "TEXT"
+          },
+          {
+            "name": "first_name",
+            "type": "TEXT"
+          },
+          {
+            "name": "last_name",
+            "type": "TEXT"
+          },
+          {
+            "name": "is_approved",
+            "type": "BOOLEAN DEFAULT FALSE"
+          },
+          {
+            "name": "approval_date",
+            "type": "TIMESTAMP"
+          },
+          {
+            "name": "created_date",
+            "type": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+          }
+        ]
+      },
+      {
+        "name": "channels",
+        "columns": [
+          {
+            "name": "channel_id",
+            "type": "TEXT PRIMARY KEY"
+          },
+          {
+            "name": "channel_username",
+            "type": "TEXT"
+          },
+          {
+            "name": "owner_id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "content_type",
+            "type": "TEXT"
+          },
+          {
+            "name": "posting_schedule",
+            "type": "TEXT"
+          },
+          {
+            "name": "custom_signature",
+            "type": "TEXT"
+          },
+          {
+            "name": "sources_mention",
+            "type": "BOOLEAN DEFAULT TRUE"
+          },
+          {
+            "name": "active",
+            "type": "BOOLEAN DEFAULT TRUE"
+          },
+          {
+            "name": "created_date",
+            "type": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+          },
+          {
+            "name": "FOREIGN KEY (owner_id)",
+            "references": "users (user_id)"
+          }
+        ]
+      },
+      {
+        "name": "approval_requests",
+        "columns": [
+          {
+            "name": "request_id",
+            "type": "INTEGER PRIMARY KEY AUTOINCREMENT"
+          },
+          {
+            "name": "user_id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "request_date",
+            "type": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+          },
+          {
+            "name": "status",
+            "type": "TEXT DEFAULT 'pending'"
+          },
+          {
+            "name": "response_date",
+            "type": "TIMESTAMP"
+          },
+          {
+            "name": "FOREIGN KEY (user_id)",
+            "references": "users (user_id)"
+          }
+        ]
+      },
+      {
+        "name": "published_content",
+        "columns": [
+          {
+            "name": "content_id",
+            "type": "INTEGER PRIMARY KEY AUTOINCREMENT"
+          },
+          {
+            "name": "channel_id",
+            "type": "TEXT"
+          },
+          {
+            "name": "content_text",
+            "type": "TEXT"
+          },
+          {
+            "name": "content_image",
+            "type": "BLOB"
+          },
+          {
+            "name": "signature",
+            "type": "TEXT"
+          },
+          {
+            "name": "post_date",
+            "type": "TIMESTAMP"
+          },
+          {
+            "name": "created_date",
+            "type": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+          },
+          {
+            "name": "FOREIGN KEY (channel_id)",
+            "references": "channels (channel_id)"
+          }
+        ]
+      }
+    ]
+  },
+  "ui_elements": {
+    "buttons": {
+      "request_approval": "📨 طلب الموافقة (الرد خلال 6 ساعات)",
+      "admin_approve": "✅ الموافقة",
+      "admin_reject": "❌ الرفض",
+      "configure_channel": "⚙️ إعدادات القنوات",
+      "set_signature": "✏️ تعديل التوقيع",
+      "generate_post": "✨ إنشاء منشور",
+      "schedule_post": "⏰ جدولة منشور",
+      "official_channel": "📢 قناتنا الرسمية"
+    }
+  },
+  "external_links": {
+    "official_channel": "https://t.me/CoontentGenBot",
+    "support_group": "https://t.me/CoontentGenBot",
+    "documentation": "https://t.me/CoontentGenBot"
+  },
+  "project_structure": {
+    "files": [
+      "main.py",
+      "config.py",
+      "database.py",
+      "handlers_commands.py",
+      "handlers_callbacks.py",
+      "handlers_messages.py",
+      "handlers_admin.py",
+      "utils_ai.py",
+      "utils_schedule.py",
+      "utils_helpers.py",
+      "utils_validators.py",
+      "keyboards_main.py",
+      "keyboards_admin.py",
+      "keyboards_channel.py",
+      "config.json",
+      "requirements.txt",
+      "README.md"
+    ],
+    "description": "هيكلية ملفات البوت بدون مجلدات - كل الملفات في مستوى واحد"
+  },
+  "file_descriptions": {
+    "main.py": "الملف الرئيسي لتشغيل البوت وتجميع كل المعالجات",
+    "config.py": "تحميل الإعدادات من config.json وإعداد الثوابت",
+    "database.py": "إدارة قاعدة البيانات SQLite وجميع العمليات عليها",
+    "handlers_commands.py": "معالجات الأوامر مثل /start و /admin",
+    "handlers_callbacks.py": "معالجات الأزرار التفاعلية والكوالباك",
+    "handlers_messages.py": "معالجات الرسائل النصية من المستخدمين",
+    "handlers_admin.py": "وظائف وأوامر الأدمن الخاصة",
+    "utils_ai.py": "وظائف الذكاء الاصطناعي والتكامل مع HuggingFace",
+    "utils_schedule.py": "جدولة المهام والنشر التلقائي",
+    "utils_helpers.py": "دوال مساعدة ومشتركة بين الملفات",
+    "utils_validators.py": "تحقق من صحة المدخلات والتواقيع",
+    "keyboards_main.py": "لوحات المفاتيح والأزرار الرئيسية",
+    "keyboards_admin.py": "أزرار ولوحات أدمن التفاعلية",
+    "keyboards_channel.py": "أزرار إدارة القنوات",
+    "config.json": "ملف الإعدادات الرئيسي الذي يحتوي على كل التكوينات",
+    "requirements.txt": "قائمة المكتبات والمتطلبات اللازمة",
+    "README.md": "دليل الاستخدام والتركيب"
+  },
+  "implementation_plan": {
+    "step_1": "رفع جميع الملفات في نفس المجلد (بدون مجلدات فرعية)",
+    "step_2": "تثبيت المتطلبات: pip install -r requirements.txt",
+    "step_3": "تعديل config.json بإضافة التوكن والإعدادات",
+    "step_4": "تشغيل البوت: python main.py",
+    "note": "جميع الملفات مصممة للعمل مع بعضها في نفس المستوى دون حاجة لمجلدات"
+  },
+  "requirements": {
+    "libraries": [
+      "python-telegram-bot==20.7",
+      "schedule==1.2.1",
+      "requests==2.31.0",
+      "aiohttp==3.8.6",
+      "python-dotenv==1.0.0",
+      "Pillow==10.1.0"
+    ],
+    "python_version": "3.8+"
+  }
+      }
